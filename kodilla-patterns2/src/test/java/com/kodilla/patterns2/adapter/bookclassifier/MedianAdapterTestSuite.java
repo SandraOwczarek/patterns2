@@ -39,7 +39,6 @@ public class MedianAdapterTestSuite {
         int median = medianAdapter.medianPublicationYear(testBooks);
         //double totalSalary = salaryAdapter.TotalSalary(workers.getWorkers() , workers.getSalaries());
         //Then
-        System.out.println(median);
         Assert.assertEquals(median, 1995 );
     }
 }
