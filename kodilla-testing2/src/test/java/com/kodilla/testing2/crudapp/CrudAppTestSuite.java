@@ -54,27 +54,27 @@ public class CrudAppTestSuite {
         return taskName;
     }
 
-//    private void sendTestTaskToTrello(String taskName) throws InterruptedException {
-//        driver.navigate().refresh();                                         // [1]
-//
-//        while(!driver.findElement(By.xpath("//select[1]")).isDisplayed());   // [2]
-//
-//        driver.findElements(
-//                By.xpath("//form[@class=\"datatable__row\"]")).stream()           // [3]
-//                .filter(anyForm ->                                             // [4]
-//                        anyForm.findElement(By.xpath(".//p[@class=\"datatable__field-value\"]")) // [5]
-//                                .getText().equals(taskName))                        // [6]
-//                .forEach(theForm -> {                                          // [7]
-//                    WebElement selectElement = theForm.findElement(By.xpath(".//select[1]"));    // [8]
-//                    Select select = new Select(selectElement);                 // [9]
-//                    select.selectByIndex(1);                                   // [10]
-//
-//                    WebElement buttonCreateCard =                              // [11]
-//                            theForm.findElement(By.xpath(".//button[contains(@class, \"card-creation\")]")); // [12]
-//                    buttonCreateCard.click();                                  // [13]
-//                });                                                            // [14]
-//        Thread.sleep(5000);
-//    }
+    private void sendTestTaskToTrello(String taskName) throws InterruptedException {
+       driver.navigate().refresh();                                         // [1]
+
+        while(!driver.findElement(By.xpath("//select[1]")).isDisplayed());   // [2]
+
+        driver.findElements(
+                By.xpath("//form[@class=\"datatable__row\"]")).stream()           // [3]
+               .filter(anyForm ->                                             // [4]
+                        anyForm.findElement(By.xpath(".//p[@class=\"datatable__field-value\"]")) // [5]
+                                .getText().equals(taskName))                        // [6]
+                .forEach(theForm -> {                                          // [7]
+                    WebElement selectElement = theForm.findElement(By.xpath(".//select[1]"));    // [8]
+                    Select select = new Select(selectElement);                 // [9]
+                    select.selectByIndex(1);                                   // [10]
+
+                    WebElement buttonCreateCard =                              // [11]
+                            theForm.findElement(By.xpath(".//button[contains(@class, \"card-creation\")]")); // [12]
+                    buttonCreateCard.click();                                  // [13]
+                });                                                            // [14]
+        Thread.sleep(5000);
+    }
 
     @BeforeEach
     public void initTests() {
