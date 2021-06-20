@@ -5,17 +5,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.lang.annotation.Native;
-import java.util.*;
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Transactional
 @Repository
 public interface CompanyDao extends CrudRepository<Company, Integer> {
-
     @Query(nativeQuery = true)
-    List<Company> findCompanyByBeginningOfName(@Param("LETTERS") String letters);
-
-    List<Company> findByNameContaining(String letters);
+    List<Company> searchCompaniesByLeftCharset(@Param("NAME") String name);
+    @Query(nativeQuery = true)
+    List<Company> searchCompaniesByCharset(@Param("NAME") String name);
+    @Query(nativeQuery = true)
+    List<Company> searchCompaniesBy3LeftCharset(@Param("NAME") String name);
 }

@@ -1,41 +1,30 @@
 package com.kodilla.hibernate.manytomany;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@NamedQuery(
-        name = "Employee.findEmployeeByLastname",
-        query = "FROM Employee WHERE lastname = :LASTNAME"
-)
-@NamedNativeQuery(
-        name = "Employee.findEmployeeByPiece",
-        query = "SELECT * FROM EMPLOYEES " +
-                "WHERE LASTNAME LIKE %:ARG" + "% OR FIRSTNAME LIKE %:ARG"+"%",
-        resultClass = Employee.class)
+@Transactional
+@NamedQueries({
+        @NamedQuery(
+                name = "Employee.retrievByLastName",
+                query = "FROM Employee WHERE Lastname = :LASTNAME"),
+        @NamedQuery(
+                name = "Employee.retrievByFragmentName",
+                query = "FROM Employee WHERE lastname LIKE CONCAT ('%', :NAMEFRAGMENT, '%')"
+        )
+})
 @Entity
-@Table(name = "EMPLOYEES")
+@Table(name = "EMPOYEES")
 public class Employee {
 
     private int id;
     private String firstname;
     private String lastname;
     private List<Company> companies = new ArrayList<>();
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "JOIN_COMPANY_EMPLOYEE",
-            joinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "EMPLOYEE_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "COMPANY_ID")}
-    )
-    public List<Company> getCompanies() {
-        return companies;
-    }
-
-    public void setCompanies(List<Company> companies) {
-        this.companies = companies;
-    }
 
     public Employee() {
     }
@@ -77,5 +66,14 @@ public class Employee {
         this.lastname = lastname;
     }
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "JOIN_COMPANY_EMPLOYEE",
+            joinColumns = {@JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "EMPLOYEE_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "COMPANY_ID", referencedColumnName = "COMPANY_ID")}
+    )
+    public List<Company> getCompanies() { return companies; }
 
+    private void setCompanies(List<Company> companies) {
+        this.companies = companies;
+    }
 }

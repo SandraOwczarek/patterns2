@@ -2,20 +2,21 @@ package com.kodilla.hibernate.invoice;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "INVOICE")
+@Table(name = "INVOICES")
 public class Invoice {
+
     private int id;
     private String number;
     private List<Item> items = new ArrayList<>();
 
+    public Invoice(){}
+
     public Invoice(String number) {
         this.number = number;
-    }
-
-    public Invoice() {
     }
 
     @Id
@@ -26,30 +27,31 @@ public class Invoice {
         return id;
     }
 
-    @NotNull
+    private void setId(int id) {
+        this.id = id;
+    }
+
     @Column(name = "NUMBER")
     public String getNumber() {
         return number;
     }
 
+    private void setNumber(String number) {
+        this.number = number;
+    }
+
     @OneToMany(
             targetEntity = Item.class,
+            mappedBy = "invoice",
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
+    @Column(name = "ITEM_ID", nullable = false)
     public List<Item> getItems() {
         return items;
     }
 
-    private void setItems(List<Item> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
-    }
-
-    private void setId(int id) {
-        this.id = id;
-    }
-
-    private void setNumber(String number) {
-        this.number = number;
     }
 }

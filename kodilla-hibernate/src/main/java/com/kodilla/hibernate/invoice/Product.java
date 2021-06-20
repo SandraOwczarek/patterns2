@@ -6,14 +6,14 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "PRODUCTS")
 public class Product {
+
     private int id;
     private String name;
 
+    public Product(){}
+
     public Product(String name) {
         this.name = name;
-    }
-
-    public Product() {
     }
 
     @Id
@@ -24,14 +24,14 @@ public class Product {
         return id;
     }
 
-    @NotNull
-    @Column(name = "NAME")
-    public String getName() {
-        return name;
-    }
-
     private void setId(int id) {
         this.id = id;
+    }
+
+    @NotNull
+    @Column(name = "PRODUCT_NAME")
+    public String getName() {
+        return name;
     }
 
     private void setName(String name) {

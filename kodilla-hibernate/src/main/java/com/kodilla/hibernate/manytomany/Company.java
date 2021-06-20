@@ -1,15 +1,26 @@
 package com.kodilla.hibernate.manytomany;
 
+//import com.kodilla.hibernate.task.Task;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
-@NamedNativeQuery(
-        name = "Company.findCompanyByBeginningOfName",
-        query = "SELECT * FROM COMPANIES " +
-                "WHERE LEFT(COMPANY_NAME, 3) = :LETTERS",
-        resultClass = Company.class
-)
+
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "Company.searchCompaniesByLeftCharset",
+                query = "SELECT * FROM companies WHERE COMPANY_NAME LIKE CONCAT(:NAME , '%')",
+                resultClass = Company.class),
+        @NamedNativeQuery(
+                name = "Company.searchCompaniesByCharset",
+                query = "SELECT * FROM companies WHERE COMPANY_NAME LIKE :NAME",
+                resultClass = Company.class),
+        @NamedNativeQuery(
+                name = "Company.searchCompaniesBy3LeftCharset",
+                query = "select * from companies where CONCAT(left(company_name,3)) LIKE :NAME",
+                resultClass = Company.class)
+})
 @Entity
 @Table(name = "COMPANIES")
 public class Company {
@@ -17,15 +28,6 @@ public class Company {
     private int id;
     private String name;
     private List<Employee> employees = new ArrayList<>();
-
-    @ManyToMany(cascade = CascadeType.ALL)
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
 
     public Company() {
     }
@@ -56,23 +58,12 @@ public class Company {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Company company = (Company) o;
-
-        if (id != company.id) return false;
-        if (name != null ? !name.equals(company.name) : company.name != null) return false;
-
-        return true;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "companies")
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }
